@@ -1,0 +1,20 @@
+<div class="album py-5">
+    <div class="container">
+        <h1 class="my-2">Add an RSS Feed</h1>
+
+        <div class="row row-cols-1 row-cols-sm-2 g-3">
+            <div class="col">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label for="url" class="form-label">RSS Feed</label>
+                            <input type="url" id="url" name="url" class="form-control" placeholder="RSS Feed URL" [(ngModel)]="rssFeedUrl" required />
+                        </div>
+            
+                        <button class="btn btn-success" (click)="addFeed()">Add feed</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

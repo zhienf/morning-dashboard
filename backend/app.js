@@ -37,18 +37,40 @@ server.listen(PORT_NUMBER, () => console.log(`Server is running on port ${PORT_N
 
 // Endpoint: add a new RSS feed
 app.post("/api/feeds", async (req, res) => {
-    const { url, name } = req.body;
+    const { url } = req.body;
+    console.log(url);
+
+    if (!url) {
+        return res.status(400).json({ error: 'URL is required.' });
+    }
+
     try {
-        const feed = new Feed({ url, name, articles: [] });
+        const parser = new Parser();
+        const feedData = await parser.parseURL(url);
+
+        const name = feedData.title;
+        const articles = feedData.items.map(item => ({
+            title: item.title,
+            link: item.link,
+            description: item.contentSnippet,
+            pubDate: item.pubDate,
+        }));
+
+        const feed = new Feed({
+            url,
+            name,
+            articles
+        });
+
         await feed.save();
         res.status(200).json(feed);
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
-  });
-  
-  // Endpoint: fetch and update articles for all feeds
-  app.get("/api/feeds", async (req, res) => {
+});
+
+// Endpoint: fetch and update articles for all feeds
+app.get("/api/feeds", async (req, res) => {
     try {
         const feeds = await Feed.find();
         const updatedFeeds = await Promise.all(
@@ -63,4 +85,4 @@ app.post("/api/feeds", async (req, res) => {
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
-  });
+});

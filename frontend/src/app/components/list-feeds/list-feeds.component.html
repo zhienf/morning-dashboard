@@ -1,0 +1,26 @@
+<div class="album py-5">
+    <div class="container">
+        <h1 class="my-2">RSS Feeds</h1>
+
+        <div class="row row-cols-1 g-3">
+            <div class="col">
+                @if (feeds.length === 0) {
+                    <div class="alert alert-warning">
+                        <h3>No feeds at the moment.</h3>
+                    </div>
+                } @else {
+                    <tbody>
+                    @for (feed of feeds; track $index) {
+                        <tr>
+                            <td scope="row">{{feed._id}}</td>
+                            <td scope="row">{{feed.url}}</td>
+                            <td scope="row">{{feed.name}}</td>
+                            <td scope="row">{{feed.articles}}</td>
+                        </tr>                       
+                    }  
+                    </tbody>
+                }
+            </div>
+        </div>
+    </div>
+</div>    
