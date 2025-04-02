@@ -23,7 +23,6 @@ export class DeleteFeedComponent {
       next: (value: any) => {
         console.log(value);
         this.onDelete.emit();
-        // this.router.navigate(['feeds']);
       },
       error: (err: any) => {
         console.error(err);

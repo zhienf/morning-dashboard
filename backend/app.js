@@ -16,8 +16,6 @@ const Feed = require("./models/feed");
 const Article = require("./models/article");
 
 const app = express(); 
-const parser = new Parser();
-
 app.use(cors());
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -97,18 +95,19 @@ app.get("/api/feeds", async (req, res) => {
 
 // Endpoint: delete a feed
 app.delete("/api/feeds", async (req, res) => {
-    const id = req.query.id;
-
-    if (!id) {
-        return res.status(400).json({ error: 'Feed ID is required.' });
-    }
-
     try {
-        const feed = await Feed.findByIdAndDelete(id);
+        const id = req.query.id;
+        let feed = await Feed.findOne({ _id: id });
         if (!feed) {
             return res.status(404).json({ error: 'Feed not found.' });
+        } else {
+            let articles = feed.articles;
+            articles.forEach(async article => {
+                await Article.findOneAndDelete({ _id: article._id });
+            });
+            let result = await Feed.deleteOne({ _id: id});
+            res.status(200).json({ message: 'Feed deleted successfully.' });
         }
-        res.status(200).json({ message: 'Feed deleted successfully.' });
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
