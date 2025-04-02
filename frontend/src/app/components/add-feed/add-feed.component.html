@@ -2,6 +2,10 @@
     <div class="container">
         <h1 class="my-2">Add an RSS Feed</h1>
 
+        <div class="mb-3">
+            <a href="/feeds" class="btn btn-primary">Back to Feeds</a>
+        </div>
+
         <div class="row row-cols-1 row-cols-sm-2 g-3">
             <div class="col">
                 <div class="card shadow-sm">
@@ -11,7 +15,7 @@
                             <input type="url" id="url" name="url" class="form-control" placeholder="RSS Feed URL" [(ngModel)]="rssFeedUrl" required />
                         </div>
             
-                        <button class="btn btn-success" (click)="addFeed()">Add feed</button>
+                        <button class="btn btn-success" (click)="addFeed()">Add Feed</button>
                     </div>
                 </div>
             </div>

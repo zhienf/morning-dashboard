@@ -1,8 +1,10 @@
+import { Article } from "./article";
+
 export class Feed {
     _id: string;
     url: string;
     name: string;
-    articles: String[]; 
+    articles: Article[]; 
 
     constructor() {
         this._id = '';

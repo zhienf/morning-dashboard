@@ -22,4 +22,8 @@ export class ApiService {
     const body = { url };
     return this.http.post(API_URL + '/feeds', body, httpOptions);
   }
+
+  deleteFeed(feedId: string) {
+    return this.http.delete(API_URL + '/feeds?id=' + feedId, httpOptions);
+  }
 }

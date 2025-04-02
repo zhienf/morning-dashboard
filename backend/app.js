@@ -113,3 +113,21 @@ app.get("/api/feeds", async (req, res) => {
         res.status(500).json({ error: err.message });
     }
 });
+
+app.delete("/api/feeds", async (req, res) => {
+    const id = req.query.id;
+
+    if (!id) {
+        return res.status(400).json({ error: 'Feed ID is required.' });
+    }
+
+    try {
+        const feed = await Feed.findByIdAndDelete(id);
+        if (!feed) {
+            return res.status(404).json({ error: 'Feed not found.' });
+        }
+        res.status(200).json({ message: 'Feed deleted successfully.' });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+}); 
