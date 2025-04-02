@@ -6,44 +6,29 @@
             <a href="/add-feed" class="btn btn-primary">Add Feed</a>
         </div>
 
-        <div class="row row-cols-1 g-3">
-            <div class="col">
-                @if (feeds.length === 0) {
-                    <div class="alert alert-warning">
-                        <h3>No feeds at the moment.</h3>
-                    </div>
-                } @else {
-                    <table class="table table-hover">
-                        <thead>
-                            <tr>
-                                <th>Feed</th>
-                                <th>Action</th>
-                                @if (feeds.length > 0 && feeds[0].articles.length > 0) {
-                                    @for (article of feeds[0].articles; track $index) {
-                                        <th>Article {{feeds[0].articles.indexOf(article) + 1}}</th>
-                                    }
-                                }
-                            </tr>
-                        </thead>
-                        <tbody>
-                        @for (feed of feeds; track $index) {
-                            <tr>
-                                <td scope="row">{{feed.name}}</td>
-                                <td scope="row">
-                                    <app-delete-feed [id]="feed._id" (onDelete)="getFeeds()"></app-delete-feed>
-                                </td>
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            @for (feed of feeds; track $index) {
+                <div class="col">
+                    <div class="card h-100">
+                        <div class="card-title">
+                            <h5 class="card-header">{{feed.name}}</h5>
+                        </div>
+                        <div class="card-body">
+                            <h6>Latest:</h6>
+                            <ul class="list-group list-group-flush">
                                 @for (article of feed.articles; track $index) {
-                                    <td>
+                                    <li class="list-group-item">
                                         <a href="{{article.link}}" target="_blank">{{article.title}}</a>
-                                    </td>
+                                    </li>
                                 }
-                                <td>
-                            </tr>                       
-                        }  
-                        </tbody>
-                    </table>
-                }
-            </div>
+                            </ul>
+                        </div>
+                        <div class="card-footer">
+                            <app-delete-feed [id]="feed._id" (onDelete)="getFeeds()"></app-delete-feed>
+                        </div>
+                    </div>
+                </div>
+            }
         </div>
     </div>
 </div>    

@@ -14,11 +14,12 @@ import { ApiService } from '../../services/api.service';
 export class AddFeedComponent {
 
   rssFeedUrl: string = '';
+  rssFeedSize: number = 5;
 
   constructor(private db: ApiService, private router: Router) {}
 
   addFeed() {
-    this.db.addFeed(this.rssFeedUrl).subscribe({
+    this.db.addFeed({ url: this.rssFeedUrl, size: this.rssFeedSize }).subscribe({
       next: (value: any) => {
         console.log(value);
         this.router.navigate(['feeds']);

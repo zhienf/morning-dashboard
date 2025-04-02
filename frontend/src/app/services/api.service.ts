@@ -18,8 +18,8 @@ export class ApiService {
     return this.http.get(API_URL + '/feeds', httpOptions);
   }
 
-  addFeed(url: string) {
-    const body = { url };
+  addFeed({ url, size }: { url: string, size: number }) {
+    const body = { url, size };
     return this.http.post(API_URL + '/feeds', body, httpOptions);
   }
 

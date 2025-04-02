@@ -13,6 +13,7 @@ const FeedSchema = mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Article'
     }],
+    size: Number,
 });
 
 module.exports = mongoose.model("Feed", FeedSchema);

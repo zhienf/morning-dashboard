@@ -14,6 +14,11 @@
                             <label for="url" class="form-label">RSS Feed</label>
                             <input type="url" id="url" name="url" class="form-control" placeholder="RSS Feed URL" [(ngModel)]="rssFeedUrl" required />
                         </div>
+
+                        <div class="mb-3">
+                            <label for="size" class="form-label">Number of Articles to Display</label>
+                            <input type="number" id="size" name="size" class="form-control" [(ngModel)]="rssFeedSize" required />
+                        </div>
             
                         <button class="btn btn-success" (click)="addFeed()">Add Feed</button>
                     </div>

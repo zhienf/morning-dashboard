@@ -42,7 +42,7 @@ server.listen(PORT_NUMBER, () => console.log(`Server is running on port ${PORT_N
 
 // Endpoint: add a new RSS feed
 app.post("/api/feeds", async (req, res) => {
-    const { url } = req.body;
+    const { url, size } = req.body;
     console.log(url);
 
     if (!url) {
@@ -66,13 +66,11 @@ app.post("/api/feeds", async (req, res) => {
             })
         );
 
-        console.log(feedData);
-        console.log(name);
-
         const feed = new Feed({
             url,
             name,
             articles: articles.map((article) => article._id),
+            size: size || 5,
         });
 
         await feed.save();
@@ -86,34 +84,18 @@ app.post("/api/feeds", async (req, res) => {
 app.get("/api/feeds", async (req, res) => {
     try {
         const feeds = await Feed.find().populate("articles");
-        const updatedFeeds = await Promise.all(
-            feeds.map(async (feed) => {
-                const parsedFeed = await parser.parseURL(feed.url);
-                const latestArticles = parsedFeed.items.slice(0, 5);
-
-                const articleDocs = await Promise.all(
-                    latestArticles.map(async (item) => {
-                        const article = new Article({
-                            title: item.title,
-                            link: item.link,
-                            description: item.contentSnippet,
-                            pubDate: new Date(item.pubDate),
-                        });
-                        return article.save();
-                    })
-                );
-
-                feed.articles = articleDocs.map((article) => article._id);
-                await feed.save();
-                return feed.populate("articles"); 
-            })
-        );
+        const updatedFeeds = feeds.map((feed) => {
+            const limitedArticles = feed.articles.slice(0, feed.size);
+            feed.articles = limitedArticles;
+            return feed;
+        });
         res.status(200).json(updatedFeeds);
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
 });
 
+// Endpoint: delete a feed
 app.delete("/api/feeds", async (req, res) => {
     const id = req.query.id;
 
