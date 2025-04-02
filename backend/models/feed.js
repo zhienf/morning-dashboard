@@ -9,14 +9,10 @@ const mongoose = require('mongoose');
 const FeedSchema = mongoose.Schema({
     url: String,
     name: String,
-    articles: [
-        {
-            title: String,
-            link: String,
-            description: String,
-            pubDate: Date,
-        },
-    ],
+    articles: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Article'
+    }],
 });
 
 module.exports = mongoose.model("Feed", FeedSchema);

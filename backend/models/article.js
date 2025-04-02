@@ -11,10 +11,6 @@ const ArticleSchema = mongoose.Schema({
     link: String,
     description: String,
     pubDate: Date,
-    feedId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Feed'
-    }
 });
 
 module.exports = mongoose.model("Article", ArticleSchema);
