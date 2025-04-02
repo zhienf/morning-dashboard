@@ -8,14 +8,18 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const http = require('http');
+const cors = require('cors');
 const axios = require("axios");
+const bodyParser = require('body-parser');
 const Parser = require("rss-parser");
 const Feed = require("./models/feed");
 
 const app = express(); 
 const parser = new Parser();
 
+app.use(cors());
 app.use(express.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 const server = http.createServer(app);
 
 // Configure Mongoose
@@ -55,6 +59,9 @@ app.post("/api/feeds", async (req, res) => {
             description: item.contentSnippet,
             pubDate: item.pubDate,
         }));
+
+        console.log(feedData);
+        console.log(name);
 
         const feed = new Feed({
             url,
